@@ -7,12 +7,17 @@ public class BallDispenser : MonoBehaviour
     private Transform dispenserTransform;
     private BallPool ballPool;
 
-    private int ballsPerFrame = 50;
+    private int ballsPerFrame = 10;
 
-    [SerializeField]
     private float launchVariance = 5f;
 
     private Bounds dispenserBounds;
+
+    private float minViewport = 0.05f;
+    private float maxViewport = 0.95f;
+
+    private bool createBalls = false;
+    private bool createUnpooledBalls = false;
 
     private void Awake()
     {
@@ -24,12 +29,52 @@ public class BallDispenser : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space))
+        Vector3 adjustedMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        adjustedMousePosition.z += Camera.main.transform.position.z + Camera.main.nearClipPlane;
+
+        Vector3 newPosition = new Vector3(adjustedMousePosition.x, adjustedMousePosition.y, this.dispenserTransform.position.z);
+        Vector3 newPositionViewport = Camera.main.WorldToViewportPoint(newPosition);
+
+        if (newPositionViewport.x < this.minViewport)
+        {
+            newPositionViewport.x = this.minViewport;
+        }
+        else if (newPositionViewport.x > this.maxViewport)
+        {
+            newPositionViewport.x = this.maxViewport;
+        }
+
+        if (newPositionViewport.y < this.minViewport)
+        {
+            newPositionViewport.y = this.minViewport;
+        }
+        else if (newPositionViewport.y > this.maxViewport)
+        {
+            newPositionViewport.y = this.maxViewport;
+        }
+
+        this.dispenserTransform.position = Camera.main.ViewportToWorldPoint(newPositionViewport);
+
+        this.createBalls = false;
+        this.createUnpooledBalls = false;
+
+        if (Input.GetMouseButton(0))
+        {
+            this.createBalls = true;
+        }
+        else if (Input.GetMouseButton(1))
+        {
+            this.createUnpooledBalls = true;
+        }        
+    }
+
+    private void FixedUpdate()
+    {
+        if (this.createBalls == true)
         {
             this.CreateMultipleBalls();
         }
-
-        if (Input.GetKey(KeyCode.Return))
+        else if (this.createUnpooledBalls == true)
         {
             this.CreateMultipleUnpooledBalls();
         }
@@ -43,19 +88,22 @@ public class BallDispenser : MonoBehaviour
 
             Ball ballReference = this.ballPool.CreateBall(instantiationPosition);
 
-            ballReference.LaunchBall(this.GetRandomDownwardDirection());
+            if (ballReference != null)
+            {
+                ballReference.LaunchBall(Random.insideUnitCircle.normalized);
+            }
         }
     }
 
     private Vector3 GetRandomInstantiationPosition()
     {        
-        float randomX = Random.Range(this.dispenserBounds.min.x, this.dispenserBounds.max.x);
-        float randomY = Random.Range(this.dispenserBounds.min.y, this.dispenserBounds.max.y);
+        float randomX = this.dispenserTransform.position.x + Random.Range(this.dispenserBounds.min.x, this.dispenserBounds.max.x);
+        float randomY = this.dispenserTransform.position.y + Random.Range(this.dispenserBounds.min.y, this.dispenserBounds.max.y);
 
-        return new Vector3(randomX, randomY, this.dispenserTransform.position.z);
+        return new Vector3(randomX, randomY, 0.0f);
     }
 
-    private Vector3 GetRandomDownwardDirection()
+    private Vector3 GetRandomDirection()
     {
         Vector3 launchDirection = Vector3.down;
         float randomXVariance = Random.Range(-this.launchVariance, this.launchVariance);
@@ -70,8 +118,8 @@ public class BallDispenser : MonoBehaviour
         {
             Vector3 instantiationPosition = this.GetRandomInstantiationPosition();
 
-            GameObject ballObject = Instantiate(this.ballPool.ballPrefab, instantiationPosition, new Quaternion(), this.dispenserTransform);
-            ballObject.GetComponent<Ball>().LaunchBall(this.GetRandomDownwardDirection());
+            GameObject ballObject = Instantiate(this.ballPool.ballPrefab, instantiationPosition, new Quaternion());
+            ballObject.GetComponent<Ball>().LaunchBall(Random.insideUnitCircle.normalized);
         }
     }
 }

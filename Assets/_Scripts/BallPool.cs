@@ -19,7 +19,7 @@ public class BallPool : MonoBehaviour
     void Awake()
     {
         this.parentTransform = GetComponent<Transform>();
-        this.InitializePool();
+        this.InitializePool();    
     }
 
     public Ball CreateBall(Vector3 position)

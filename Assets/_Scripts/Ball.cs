@@ -20,7 +20,7 @@ public class Ball : MonoBehaviour
 
     private BallPool ballPool;
 
-    private float activationDelayInFrames = 10f;
+    private float activationDelayInFrames = 0f;
 
     private float launchForce = 1f;
 
@@ -109,5 +109,4 @@ public class Ball : MonoBehaviour
 
         Debug.LogError("Winner!");
     }
-
 }
