@@ -68,7 +68,9 @@ public class BallDispenser : MonoBehaviour
     {
         for (int i = 0; i < this.ballsPerFrame; i++)
         {
-            GameObject ballObject = Instantiate(this.ballPool.ballPrefab, this.dispenserTransform.position, new Quaternion(), this.dispenserTransform);
+            Vector3 instantiationPosition = this.GetRandomInstantiationPosition();
+
+            GameObject ballObject = Instantiate(this.ballPool.ballPrefab, instantiationPosition, new Quaternion(), this.dispenserTransform);
             ballObject.GetComponent<Ball>().LaunchBall(this.GetRandomDownwardDirection());
         }
     }

@@ -22,7 +22,9 @@ public class Ball : MonoBehaviour
 
     private float activationDelayInFrames = 10f;
 
-    private float launchForce = 10f;
+    private float launchForce = 1f;
+
+    private float goalTime = 3.0f;
 
     public void SetupObject(BallPool pool, int index)
     {
@@ -78,5 +80,34 @@ public class Ball : MonoBehaviour
                 Destroy(this.gameObject);
             }
         }
+
+        if (other.tag == "Goal")
+        {
+            this.StopAllCoroutines();
+            StartCoroutine(this.CheckGoal());
+
+        }
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Goal")
+        {
+            this.StopAllCoroutines();            
+        }
+    }
+
+    private IEnumerator CheckGoal()
+    {
+        float currentTime = 0.0f;
+
+        while (currentTime < this.goalTime)
+        {
+            yield return new WaitForFixedUpdate();
+            currentTime += Time.fixedDeltaTime;
+        }
+
+        Debug.LogError("Winner!");
+    }
+
 }
