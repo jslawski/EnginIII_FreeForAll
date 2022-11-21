@@ -1,15 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BallDispenser : MonoBehaviour
 {
     private Transform dispenserTransform;
     private BallPool ballPool;
 
-    private int ballsPerFrame = 10;
-
-    private float launchVariance = 5f;
+    public int ballsPerFrame = 10;
 
     private Bounds dispenserBounds;
 
@@ -19,10 +18,14 @@ public class BallDispenser : MonoBehaviour
     private bool createBalls = false;
     private bool createUnpooledBalls = false;
 
+    [HideInInspector]
+    public SpriteRenderer spriteRenderer;
+
     private void Awake()
     {
         this.dispenserTransform = GetComponent<Transform>();
         this.dispenserBounds = GetComponent<Collider>().bounds;
+        this.spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         this.ballPool = GameObject.Find("BallPool").GetComponent<BallPool>();        
     }
 
@@ -58,11 +61,11 @@ public class BallDispenser : MonoBehaviour
         this.createBalls = false;
         this.createUnpooledBalls = false;
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && this.IsOverlappingButton() == false)
         {
             this.createBalls = true;
         }
-        else if (Input.GetMouseButton(1))
+        else if (Input.GetMouseButton(1) && this.IsOverlappingButton() == false)
         {
             this.createUnpooledBalls = true;
         }        
@@ -78,6 +81,11 @@ public class BallDispenser : MonoBehaviour
         {
             this.CreateMultipleUnpooledBalls();
         }
+    }
+
+    private bool IsOverlappingButton()
+    {
+        return EventSystem.current.IsPointerOverGameObject();
     }
 
     private void CreateMultipleBalls()
@@ -101,15 +109,6 @@ public class BallDispenser : MonoBehaviour
         float randomY = this.dispenserTransform.position.y + Random.Range(this.dispenserBounds.min.y, this.dispenserBounds.max.y);
 
         return new Vector3(randomX, randomY, 0.0f);
-    }
-
-    private Vector3 GetRandomDirection()
-    {
-        Vector3 launchDirection = Vector3.down;
-        float randomXVariance = Random.Range(-this.launchVariance, this.launchVariance);
-        launchDirection.x = randomXVariance;
-
-        return launchDirection.normalized;
     }
 
     private void CreateMultipleUnpooledBalls()

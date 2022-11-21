@@ -29,7 +29,7 @@ public class Ball : MonoBehaviour
     public void SetupObject(BallPool pool, int index)
     {
         this.ballIndex = index;
-        this.ballPool = pool;
+        this.ballPool = pool;        
         this.UnloadObject();
     }
 
@@ -39,6 +39,7 @@ public class Ball : MonoBehaviour
         this.ballTransform.position = position;
         this.ballRb.useGravity = true;
         this.gameObject.layer = LayerMask.NameToLayer("DeadBall");
+        this.ballRenderer.material = this.ballPool.currentBallMaterial;
     }
 
     public void UnloadObject()

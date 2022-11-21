@@ -15,6 +15,8 @@ public class BallPool : MonoBehaviour
 
     private Ball firstAvailableBall;
 
+    public Material currentBallMaterial;
+
     // Start is called before the first frame update
     void Awake()
     {
