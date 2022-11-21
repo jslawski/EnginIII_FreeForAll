@@ -10,6 +10,8 @@ public class Ball : MonoBehaviour
     private Transform ballTransform;
     [SerializeField]
     private Rigidbody ballRb;
+    [SerializeField]
+    private Collider ballCollider;
 
     [HideInInspector]
     public int ballIndex;
@@ -17,6 +19,10 @@ public class Ball : MonoBehaviour
     public Ball nextBall;
 
     private BallPool ballPool;
+
+    private float activationDelayInFrames = 10f;
+
+    private float launchForce = 10f;
 
     public void SetupObject(BallPool pool, int index)
     {
@@ -30,6 +36,7 @@ public class Ball : MonoBehaviour
         this.gameObject.SetActive(true);
         this.ballTransform.position = position;
         this.ballRb.useGravity = true;
+        this.gameObject.layer = LayerMask.NameToLayer("DeadBall");
     }
 
     public void UnloadObject()
@@ -37,14 +44,25 @@ public class Ball : MonoBehaviour
         this.ballTransform.position = Vector3.zero;
         this.gameObject.SetActive(false);
 
-        //this.ballRenderer.enabled = false;
         this.ballRb.velocity = Vector3.zero;
         this.ballRb.useGravity = false;
     }
 
     public void LaunchBall(Vector3 direction)
     {
+        this.ballRb.AddForce(direction * this.launchForce, ForceMode.Impulse);
 
+        StartCoroutine(this.ActivateBall());
+    }
+
+    private IEnumerator ActivateBall()
+    {
+        for (int i = 0; i < this.activationDelayInFrames; i++)
+        {
+            yield return new WaitForFixedUpdate();
+        }
+
+        this.gameObject.layer = LayerMask.NameToLayer("LiveBall");
     }
 
     private void OnTriggerEnter(Collider other)

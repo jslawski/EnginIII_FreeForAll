@@ -7,18 +7,18 @@ public class BallDispenser : MonoBehaviour
     private Transform dispenserTransform;
     private BallPool ballPool;
 
-    public int ballsPerFrame = 10;
+    private int ballsPerFrame = 50;
+
+    [SerializeField]
+    private float launchVariance = 5f;
+
+    private Bounds dispenserBounds;
 
     private void Awake()
     {
         this.dispenserTransform = GetComponent<Transform>();
+        this.dispenserBounds = GetComponent<Collider>().bounds;
         this.ballPool = GameObject.Find("BallPool").GetComponent<BallPool>();        
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
@@ -39,16 +39,37 @@ public class BallDispenser : MonoBehaviour
     {
         for (int i = 0; i < this.ballsPerFrame; i++)
         {
-            this.ballPool.CreateBall(this.dispenserTransform.position);
+            Vector3 instantiationPosition = this.GetRandomInstantiationPosition();
+
+            Ball ballReference = this.ballPool.CreateBall(instantiationPosition);
+
+            ballReference.LaunchBall(this.GetRandomDownwardDirection());
         }
+    }
+
+    private Vector3 GetRandomInstantiationPosition()
+    {        
+        float randomX = Random.Range(this.dispenserBounds.min.x, this.dispenserBounds.max.x);
+        float randomY = Random.Range(this.dispenserBounds.min.y, this.dispenserBounds.max.y);
+
+        return new Vector3(randomX, randomY, this.dispenserTransform.position.z);
+    }
+
+    private Vector3 GetRandomDownwardDirection()
+    {
+        Vector3 launchDirection = Vector3.down;
+        float randomXVariance = Random.Range(-this.launchVariance, this.launchVariance);
+        launchDirection.x = randomXVariance;
+
+        return launchDirection.normalized;
     }
 
     private void CreateMultipleUnpooledBalls()
     {
         for (int i = 0; i < this.ballsPerFrame; i++)
         {
-            Instantiate(this.ballPool.ballPrefab, this.dispenserTransform.position, new Quaternion(), this.dispenserTransform);            
-            //this.ballPool.CreateBall(this.dispenserTransform.position);
+            GameObject ballObject = Instantiate(this.ballPool.ballPrefab, this.dispenserTransform.position, new Quaternion(), this.dispenserTransform);
+            ballObject.GetComponent<Ball>().LaunchBall(this.GetRandomDownwardDirection());
         }
     }
 }

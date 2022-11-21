@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BallPool : MonoBehaviour
 {
-    const int PoolSize = 10000;
+    const int PoolSize = 5000;
 
     private Transform parentTransform;
 
