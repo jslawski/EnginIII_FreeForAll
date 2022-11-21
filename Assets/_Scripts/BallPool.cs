@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class BallPool : MonoBehaviour
 {
-    const int PoolSize = 1000;
+    const int PoolSize = 10000;
 
     private Transform parentTransform;
 
     [SerializeField]
-    private GameObject ballPrefab;
+    public GameObject ballPrefab;
 
     private Ball[] pool;
 

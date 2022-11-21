@@ -51,7 +51,14 @@ public class Ball : MonoBehaviour
     {
         if (other.tag == "KillCollider")
         {
-            this.ballPool.DestroyBall(this);
+            if (this.ballPool != null)
+            {
+                this.ballPool.DestroyBall(this);
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
         }
     }
 }

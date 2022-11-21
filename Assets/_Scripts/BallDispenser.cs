@@ -28,6 +28,11 @@ public class BallDispenser : MonoBehaviour
         {
             this.CreateMultipleBalls();
         }
+
+        if (Input.GetKey(KeyCode.Return))
+        {
+            this.CreateMultipleUnpooledBalls();
+        }
     }
 
     private void CreateMultipleBalls()
@@ -35,6 +40,15 @@ public class BallDispenser : MonoBehaviour
         for (int i = 0; i < this.ballsPerFrame; i++)
         {
             this.ballPool.CreateBall(this.dispenserTransform.position);
+        }
+    }
+
+    private void CreateMultipleUnpooledBalls()
+    {
+        for (int i = 0; i < this.ballsPerFrame; i++)
+        {
+            Instantiate(this.ballPool.ballPrefab, this.dispenserTransform.position, new Quaternion(), this.dispenserTransform);            
+            //this.ballPool.CreateBall(this.dispenserTransform.position);
         }
     }
 }
