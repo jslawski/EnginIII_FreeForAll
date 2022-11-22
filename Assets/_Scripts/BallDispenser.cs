@@ -75,7 +75,12 @@ public class BallDispenser : MonoBehaviour
         else if (Input.GetMouseButton(1) && this.IsOverlappingButton() == false)
         {
             this.createUnpooledBalls = true;
-        }        
+        }
+
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     private void FixedUpdate()
