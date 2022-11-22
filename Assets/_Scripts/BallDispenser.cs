@@ -20,7 +20,7 @@ public class BallDispenser : MonoBehaviour
     [HideInInspector]
     public Transform dispenserTransform;
     [HideInInspector]
-    public int ballsPerFrame = 10;
+    public int ballsPerFrame = 5;
 
     private void Awake()
     {

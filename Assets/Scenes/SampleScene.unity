@@ -1313,7 +1313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51ded04aaff6c7c4cb0093c3dfb22cb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballsPerFrame: 10
+  ballsPerFrame: 5
   dispenserScale: 0.75
 --- !u!222 &838110395
 CanvasRenderer:
@@ -1977,7 +1977,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51ded04aaff6c7c4cb0093c3dfb22cb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballsPerFrame: 20
+  ballsPerFrame: 10
   dispenserScale: 1.5
 --- !u!222 &1043525084
 CanvasRenderer:
@@ -2679,7 +2679,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51ded04aaff6c7c4cb0093c3dfb22cb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballsPerFrame: 5
+  ballsPerFrame: 3
   dispenserScale: 0.5
 --- !u!222 &1203453303
 CanvasRenderer:
@@ -3072,7 +3072,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51ded04aaff6c7c4cb0093c3dfb22cb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballsPerFrame: 15
+  ballsPerFrame: 7
   dispenserScale: 1
 --- !u!222 &1295812951
 CanvasRenderer:
