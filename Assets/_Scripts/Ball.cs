@@ -29,7 +29,7 @@ public class Ball : MonoBehaviour
     public void SetupObject(BallPool pool, int index)
     {
         this.ballIndex = index;
-        this.ballPool = pool;        
+        this.ballPool = pool;
         this.UnloadObject();
     }
 

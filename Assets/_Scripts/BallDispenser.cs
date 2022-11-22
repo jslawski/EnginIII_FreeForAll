@@ -15,6 +15,8 @@ public class BallDispenser : MonoBehaviour
     private bool createBalls = false;
     private bool createUnpooledBalls = false;
 
+    private AudioSource dispenserAudio;
+
     [HideInInspector]
     public SpriteRenderer spriteRenderer;
     [HideInInspector]
@@ -26,11 +28,12 @@ public class BallDispenser : MonoBehaviour
 
     private void Awake()
     {
+        this.dispenserAudio = GetComponent<AudioSource>();
         this.dispenserTransform = GetComponent<Transform>();
         this.dispenserBounds = GetComponent<Collider>().bounds;
         this.spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         this.ballPool = GameObject.Find("BallPool").GetComponent<BallPool>();
-        this.ballScale = new Vector3(0.3f, 0.3f, 0.3f);
+        this.ballScale = new Vector3(0.3f, 0.3f, 0.3f);        
     }
 
     // Update is called once per frame
@@ -80,11 +83,30 @@ public class BallDispenser : MonoBehaviour
         if (this.createBalls == true)
         {
             this.CreateMultipleBalls();
+            if (this.dispenserAudio.isPlaying == false)
+            {
+                this.PlayScaledPitch();
+            }
         }
         else if (this.createUnpooledBalls == true)
         {
             this.CreateMultipleUnpooledBalls();
+
+            if (this.dispenserAudio.isPlaying == false)
+            {
+                this.PlayScaledPitch();
+            }
         }
+        else
+        {
+            this.dispenserAudio.Stop();
+        }
+    }
+
+    private void PlayScaledPitch()
+    {
+        this.dispenserAudio.pitch = (1.3f - this.ballScale.x);
+        this.dispenserAudio.Play();
     }
 
     private bool IsOverlappingButton()
