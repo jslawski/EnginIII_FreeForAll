@@ -4,12 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class BallDispenser : MonoBehaviour
-{
-    private Transform dispenserTransform;
+{   
     private BallPool ballPool;
-
-    public int ballsPerFrame = 10;
-
+    
     private Bounds dispenserBounds;
 
     private float minViewport = 0.05f;
@@ -20,6 +17,10 @@ public class BallDispenser : MonoBehaviour
 
     [HideInInspector]
     public SpriteRenderer spriteRenderer;
+    [HideInInspector]
+    public Transform dispenserTransform;
+    [HideInInspector]
+    public int ballsPerFrame = 10;
 
     private void Awake()
     {
