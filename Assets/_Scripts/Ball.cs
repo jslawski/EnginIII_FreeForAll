@@ -33,10 +33,11 @@ public class Ball : MonoBehaviour
         this.UnloadObject();
     }
 
-    public void LoadObject(Vector3 position)
+    public void LoadObject(Vector3 position, Vector3 scale)
     {
         this.gameObject.SetActive(true);
         this.ballTransform.position = position;
+        this.ballTransform.localScale = scale;
         this.ballRb.useGravity = true;
         this.gameObject.layer = LayerMask.NameToLayer("DeadBall");
         this.ballRenderer.material = this.ballPool.currentBallMaterial;

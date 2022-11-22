@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BallPool : MonoBehaviour
 {
-    const int PoolSize = 5000;
+    const int PoolSize = 10000;
 
     private Transform parentTransform;
 
@@ -24,7 +24,7 @@ public class BallPool : MonoBehaviour
         this.InitializePool();    
     }
 
-    public Ball CreateBall(Vector3 position)
+    public Ball CreateBall(Vector3 position, Vector3 scale)
     {
         if (this.firstAvailableBall == null)
         {
@@ -32,7 +32,7 @@ public class BallPool : MonoBehaviour
         }
 
         Ball newBall = this.firstAvailableBall;
-        newBall.LoadObject(position);
+        newBall.LoadObject(position, scale);
 
         this.firstAvailableBall = this.firstAvailableBall.nextBall;
 

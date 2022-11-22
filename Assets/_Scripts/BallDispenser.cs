@@ -21,13 +21,16 @@ public class BallDispenser : MonoBehaviour
     public Transform dispenserTransform;
     [HideInInspector]
     public int ballsPerFrame = 5;
+    [HideInInspector]
+    public Vector3 ballScale;
 
     private void Awake()
     {
         this.dispenserTransform = GetComponent<Transform>();
         this.dispenserBounds = GetComponent<Collider>().bounds;
         this.spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        this.ballPool = GameObject.Find("BallPool").GetComponent<BallPool>();        
+        this.ballPool = GameObject.Find("BallPool").GetComponent<BallPool>();
+        this.ballScale = new Vector3(0.3f, 0.3f, 0.3f);
     }
 
     // Update is called once per frame
@@ -95,7 +98,7 @@ public class BallDispenser : MonoBehaviour
         {
             Vector3 instantiationPosition = this.GetRandomInstantiationPosition();
 
-            Ball ballReference = this.ballPool.CreateBall(instantiationPosition);
+            Ball ballReference = this.ballPool.CreateBall(instantiationPosition, this.ballScale);
 
             if (ballReference != null)
             {
@@ -120,6 +123,8 @@ public class BallDispenser : MonoBehaviour
 
             GameObject ballObject = Instantiate(this.ballPool.ballPrefab, instantiationPosition, new Quaternion());
             ballObject.GetComponent<Ball>().LaunchBall(Random.insideUnitCircle.normalized);
+            ballObject.GetComponent<Transform>().localScale = this.ballScale;
+            ballObject.GetComponent<MeshRenderer>().material = this.ballPool.currentBallMaterial;
         }
     }
 }
